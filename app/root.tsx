@@ -7,8 +7,8 @@ import {
   useRouteLoaderData,
 } from '@remix-run/react';
 import { withEmotionCache } from '@emotion/react';
-import { Box, ChakraProvider } from '@chakra-ui/react';
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import { Box, ChakraProvider, VStack } from '@chakra-ui/react';
+//import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import type {
   MetaFunction,
@@ -80,7 +80,12 @@ const Document = withEmotionCache(
     }, []);
 
     return (
-      <html lang='en'>
+      <html
+        lang='en'
+        style={{
+          height: '100%',
+        }}
+      >
         <head>
           <meta
             name='viewport'
@@ -108,32 +113,38 @@ const Document = withEmotionCache(
 
 export default function App() {
   //@ts-expect-error -- everything works as intended
-  const { user, recaptchaSiteKey } = useRouteLoaderData<typeof loader>('root');
+  const { user /*, recaptchaSiteKey*/ } =
+    useRouteLoaderData<typeof loader>('root');
 
   return (
-    <GoogleReCaptchaProvider
-      reCaptchaKey={recaptchaSiteKey}
-      scriptProps={{
-        async: false,
-        defer: true,
-        appendTo: 'head',
-        nonce: undefined,
-      }}
-    >
-      <Document>
-        <ChakraProvider>
-          <UserContext.Provider value={user}>
+    // <GoogleReCaptchaProvider
+    //   reCaptchaKey={recaptchaSiteKey}
+    //   scriptProps={{
+    //     async: false,
+    //     defer: true,
+    //     appendTo: 'head',
+    //     nonce: undefined,
+    //   }}
+    // >
+    <Document>
+      <ChakraProvider>
+        <UserContext.Provider value={user}>
+          <VStack alignContent={'space-between'}>
             <Navbar />
             <Box
               p={3}
+              pb={100}
               as='main'
+              minH={'100%'}
+              width={'95%'}
             >
               <Outlet />
             </Box>
             <Footer />
-          </UserContext.Provider>
-        </ChakraProvider>
-      </Document>
-    </GoogleReCaptchaProvider>
+          </VStack>
+        </UserContext.Provider>
+      </ChakraProvider>
+    </Document>
+    // </GoogleReCaptchaProvider>
   );
 }

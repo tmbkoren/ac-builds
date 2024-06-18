@@ -47,6 +47,7 @@ const Navbar = () => {
     <Box
       as='nav'
       p={3}
+      w={'100%'}
       //bg={colorMode === 'light' ? 'gray.500' : 'gray.700'}
       borderBottom={'1px solid'}
       borderColor={colorMode === 'light' ? 'gray.200' : 'blue.900'}

@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <HStack
       as={'footer'}
-      position={'fixed'}
+      position={'absolute'}
       bottom={0}
       p={3}
       w={'100%'}

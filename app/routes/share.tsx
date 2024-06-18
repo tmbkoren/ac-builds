@@ -19,13 +19,15 @@ import {
 } from '@chakra-ui/react';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, redirect, useActionData } from '@remix-run/react';
-import { useCallback, useEffect, useState } from 'react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useCallback, useState } from 'react';
+//import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { authenticator } from '~/services/auth.server';
 import { createPost } from '~/services/post.server';
 import { getUserById } from '~/services/user.server';
-import { getRecaptchaScore } from '~/utils/getRecaptchaScore';
+//import { getRecaptchaScore } from '~/utils/getRecaptchaScore';
 import { CreatedPost } from '~/utils/types';
+import fallbackImage from '../img/img_error.png';
+import debounce from 'lodash/debounce';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const cookieUser = await authenticator.isAuthenticated(request, {
@@ -43,14 +45,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const tags = formData.get('tags') as string;
-  const token = formData.get('_captcha') as string;
-  const key = process.env.RECAPTCHA_SECRET_KEY as string;
-  const recaptchaResult = await getRecaptchaScore(token, key);
+  //const token = formData.get('_captcha') as string;
+  //const key = process.env.RECAPTCHA_SECRET_KEY as string;
+  //const recaptchaResult = await getRecaptchaScore(token, key);
 
-  if (!recaptchaResult) {
-    return new Response('reCAPTCHA verification failed', { status: 400 });
-  }
-  console.log('recaptchaResult,', recaptchaResult); // result of our recaptcha validation
+  // if (!recaptchaResult) {
+  //   return new Response('reCAPTCHA verification failed', { status: 400 });
+  // }
+  // console.log('recaptchaResult,', recaptchaResult); // result of our recaptcha validation
   const tagsArray = tags.split(',').filter((tag) => tag.trim() !== '');
   if (tagsArray.length < 1) {
     return new Response('Please provide at least one tag', { status: 400 });
@@ -79,33 +81,54 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   };
   await createPost(newPost);
 
-  return redirect('/');
+  return redirect('/profile');
 };
 
 const SharePage = () => {
   const [tagInput, setTagInput] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageSrc, setImageSrc] = useState('');
   const [imgError, setImgError] = useState<boolean>(false);
   const actionData = useActionData<typeof action>();
 
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  //const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   // custom hook from reCaptcha library
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  // const { executeRecaptcha } = useGoogleReCaptcha();
 
-  const handleReCaptchaVerify = useCallback(async () => {
-    if (!executeRecaptcha) {
-      return;
-    }
+  // const handleReCaptchaVerify = useCallback(async () => {
+  //   if (!executeRecaptcha) {
+  //     return;
+  //   }
 
-    const token = await executeRecaptcha('yourAction');
-    setCaptchaToken(token);
-  }, [executeRecaptcha]);
+  //   const token = await executeRecaptcha('yourAction');
+  //   setCaptchaToken(token);
+  // }, [executeRecaptcha]);
 
-  useEffect(() => {
-    handleReCaptchaVerify();
-  }, [handleReCaptchaVerify]);
+  // useEffect(() => {
+  //   handleReCaptchaVerify();
+  // }, [handleReCaptchaVerify]);
+
+  const fetchImage = (imageUrl: string) => {
+    console.log('fetching', imageUrl);
+
+    // You can use fetch or axios to get the image
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((imageBlob) => {
+        const imageObjectURL = URL.createObjectURL(imageBlob);
+        setImageSrc(imageObjectURL);
+      })
+      .catch((error) => console.error('Error fetching image:', error));
+  };
+
+  const debouncedFetchImage = useCallback(
+    debounce((nextUrl) => {
+      fetchImage(nextUrl);
+    }, 500),
+    []
+  ); // Adjust the delay time as needed
 
   const handleTagInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === ',' || event.key === 'Enter') {
@@ -125,19 +148,22 @@ const SharePage = () => {
   const handleImageUrlChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setImageUrl(event.target.value);
+    const nextUrl = event.target.value;
+    setImageUrl(nextUrl);
+    debouncedFetchImage(nextUrl);
     setImgError(false);
+    //setImageUrl(event.target.value);
   };
 
   return (
     <Form method='post'>
-      {captchaToken ? (
+      {/* {captchaToken ? (
         <input
           type='hidden'
           name='_captcha'
           value={captchaToken}
         ></input>
-      ) : null}
+      ) : null} */}
       <FormLabel as='h1'>Category: </FormLabel>
       <RadioGroup
         name='category'
@@ -199,14 +225,17 @@ const SharePage = () => {
           value={imageUrl}
           onChange={handleImageUrlChange}
           placeholder='Enter image URL'
+          borderColor={imgError ? 'red.500' : 'gray.200'}
         />
 
         <Box mt={4}>
           <Image
-            src={imageUrl}
+            src={imageSrc}
             alt='Image Preview'
             maxW='20%'
             onError={() => setImgError(true)}
+            borderColor={imgError ? 'red.500' : 'gray.200'}
+            fallbackSrc={fallbackImage}
           />
         </Box>
 
@@ -264,7 +293,7 @@ const SharePage = () => {
       <Button
         type='submit'
         isDisabled={imgError}
-        onSubmit={() => handleReCaptchaVerify()}
+        // onSubmit={() => handleReCaptchaVerify()}
       >
         Submit
       </Button>
