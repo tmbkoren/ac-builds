@@ -20,13 +20,14 @@ import Navbar from './components/Navbar';
 import { ServerStyleContext, ClientStyleContext } from './context';
 import { useContext, useEffect } from 'react';
 import UserContext from './utils/UserContext';
+import Footer from './components/Footer';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'AC-Builds' },
+    { title: 'AC6Builds' },
     {
       property: 'og:title',
-      content: 'AC-Builds',
+      content: 'AC6Builds',
     },
     {
       name: 'description',
@@ -129,6 +130,7 @@ export default function App() {
             >
               <Outlet />
             </Box>
+            <Footer />
           </UserContext.Provider>
         </ChakraProvider>
       </Document>
