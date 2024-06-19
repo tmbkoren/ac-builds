@@ -19,9 +19,9 @@ import {
 } from '@chakra-ui/react';
 import { Link } from '@remix-run/react';
 import { LoadedPost } from '~/utils/types';
-import React, { useContext, useRef } from 'react';
+import React, { /*useContext,*/ useRef } from 'react';
 import PostTag from './PostTag';
-import UserContext from '~/utils/UserContext';
+// import UserContext from '~/utils/UserContext';
 
 interface PostCardProps {
   post: LoadedPost;
@@ -34,8 +34,8 @@ const PostCard: React.FC<PostCardProps> = ({
   deleteable,
   deletePost,
 }) => {
-  const user = useContext(UserContext);
-  console.log('user', user);
+  //const user = useContext(UserContext);
+  //console.log('user', user);
   const { onCopy, value } = useClipboard(post.shareCode);
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();

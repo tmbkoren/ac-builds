@@ -10,7 +10,7 @@ export async function registerUsername(username: string, email: string) {
       onBoarded: true,
     },
   });
-  console.log('prisma user', user);
+  // console.log('prisma user', user);
   return user;
 }
 

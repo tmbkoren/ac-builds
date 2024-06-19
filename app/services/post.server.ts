@@ -80,7 +80,7 @@ export async function getPosts(
     }
   }
 
-  console.log('filters', filters);
+  // console.log('filters', filters);
 
   let pageCount = await prisma.post.count({
     where: filters,

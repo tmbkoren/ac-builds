@@ -11,15 +11,15 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (cookieUser?.id == userId) {
     return redirect('/profile');
   }
-  console.log('params', params, 'userId', userId);
+  //console.log('params', params, 'userId', userId);
   const posts = await getPostsByUserId(userId);
-  console.log('userId posts', posts);
+  //console.log('userId posts', posts);
   return posts;
 };
 
 const UserProfilePage = () => {
   const loaderPosts = useLoaderData<LoadedPost[]>();
-  console.log('loaderPosts', loaderPosts);
+  //console.log('loaderPosts', loaderPosts);
   const posts: LoadedPost[] = loaderPosts?.map((post) => ({
     ...post,
     createdAt: new Date(post.createdAt),

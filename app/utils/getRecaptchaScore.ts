@@ -22,10 +22,10 @@ export async function getRecaptchaScore(
     res = await res.json();
   } catch (e) {
     // Handling errors if the reCAPTCHA verification fails
-    console.log('recaptcha error:', e);
+    // console.log('recaptcha error:', e);
   }
 
-  console.log(res.score); // let's console log the score
+  // console.log(res.score); // let's console log the score
 
   // Checking the result of the reCAPTCHA verification
   if (res && res.success && res.score > 0.5) {

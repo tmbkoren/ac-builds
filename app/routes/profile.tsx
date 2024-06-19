@@ -29,7 +29,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function Screen() {
   const { user, loadedPosts } = useLoaderData<typeof loader>();
   //const navigate = useNavigate();
-  console.log('user', user);
+  //console.log('user', user);
 
   const posts: LoadedPost[] = loadedPosts?.map((post) => ({
     ...post,

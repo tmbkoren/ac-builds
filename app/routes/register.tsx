@@ -23,12 +23,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   const user = await getUserById(cookieUser.id);
-  console.log(user);
+  //console.log(user);
 
   if (user?.onBoarded) {
     //return redirect('/profile');
   } else if (!user) {
-    console.log('no user found');
+    //console.log('no user found');
     return redirect('/login');
   }
 
@@ -51,7 +51,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   try {
-    console.log('registering username', username, user.email);
+    //console.log('registering username', username, user.email);
     await registerUsername(username, user.email);
   } catch (error) {
     console.error(error);
@@ -62,7 +62,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function RegisterForm() {
   const actionData = useActionData<typeof action>();
-  console.log('actionData', actionData);
+  //console.log('actionData', actionData);
   return (
     <VStack p={7} my={'auto'}>
       <Form method='post'>

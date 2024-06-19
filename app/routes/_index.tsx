@@ -22,7 +22,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  console.log('loader triggered');
+  //console.log('loader triggered');
   const url = new URL(request.url);
   const searchQuery = url.searchParams.get('search') || '';
   const platform = url.searchParams.get('platform') || 'ALL';
@@ -46,7 +46,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   if (!user?.onBoarded) {
     return redirect('/register');
   }
-  console.log('loader fun posts', posts);
+  //console.log('loader fun posts', posts);
   return { pageCount, posts };
 }
 

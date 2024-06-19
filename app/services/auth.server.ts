@@ -59,7 +59,7 @@ const discordStrategy = new DiscordStrategy(
     scope: ['identify', 'email'],
   },
   async ({ profile }) => {
-    console.log('discord profile', profile.__json);
+    //console.log('discord profile', profile.__json);
     const email = profile.__json.email as string;
     let user = await prisma.user.findFirst({
       where: {
