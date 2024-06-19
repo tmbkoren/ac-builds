@@ -15,17 +15,17 @@ interface CookieUser {
 
 export const authenticator = new Authenticator<CookieUser>(sessionStorage);
 
-const callbackUrl = 'http://localhost:5173/auth/google/callback';
+let callbackUrl = 'http://localhost:5173/auth/';
 
-// if (process.env.NODE_ENV === 'production') {
-//   callbackUrl = 'https://zeronoto.vercel.app/auth/google/callback';
-// }
+if (process.env.NODE_ENV === 'production') {
+  callbackUrl = 'https://ac-builds.vercel.app/auth/';
+}
 
 const googleStrategy = new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_AUTH_CLIENT_ID!,
     clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET!,
-    callbackURL: callbackUrl,
+    callbackURL: callbackUrl + 'google/callback',
   },
   async ({ profile }) => {
     const email = profile.emails[0].value;
@@ -54,7 +54,7 @@ const discordStrategy = new DiscordStrategy(
   {
     clientID: process.env.DISCORD_AUTH_CLIENT_ID!,
     clientSecret: process.env.DISCORD_AUTH_CLIENT_SECRET!,
-    callbackURL: 'http://localhost:5173/auth/discord/callback',
+    callbackURL: callbackUrl + 'discord/callback',
     // Provide all the scopes you want as an array
     scope: ['identify', 'email'],
   },
@@ -86,7 +86,7 @@ const githubStrategy = new GitHubStrategy(
   {
     clientID: process.env.GITHUB_AUTH_CLIENT_ID!,
     clientSecret: process.env.GITHUB_AUTH_CLIENT_SECRET!,
-    callbackURL: 'http://localhost:5173/auth/github/callback',
+    callbackURL: callbackUrl + 'github/callback',
   },
   async ({ profile }) => {
     const email = profile.emails[0].value;
