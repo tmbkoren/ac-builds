@@ -16,8 +16,11 @@ import SearchForm from '~/components/SearchForm';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' },
+    { title: 'AC6Builds' },
+    {
+      name: 'description',
+      content: 'App for sharing your AC6 builds and emblems',
+    },
   ];
 };
 

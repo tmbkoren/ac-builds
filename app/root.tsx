@@ -21,6 +21,7 @@ import { ServerStyleContext, ClientStyleContext } from './context';
 import { useContext, useEffect } from 'react';
 import UserContext from './utils/UserContext';
 import Footer from './components/Footer';
+import theme from './utils/theme';
 
 export const meta: MetaFunction = () => {
   return [
@@ -127,7 +128,7 @@ export default function App() {
     //   }}
     // >
     <Document>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <UserContext.Provider value={user}>
           <VStack alignContent={'space-between'}>
             <Navbar />
