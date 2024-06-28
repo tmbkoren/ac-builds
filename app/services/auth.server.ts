@@ -18,7 +18,7 @@ export const authenticator = new Authenticator<CookieUser>(sessionStorage);
 let callbackUrl = 'http://localhost:5173/auth/';
 
 if (process.env.NODE_ENV === 'production') {
-  callbackUrl = 'https://ac-builds.vercel.app/auth/';
+  callbackUrl = 'https://ac6builds.com/auth/';
 }
 
 const googleStrategy = new GoogleStrategy(
