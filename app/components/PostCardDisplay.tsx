@@ -1,7 +1,8 @@
 import { Grid } from '@chakra-ui/react';
 import PostCard from './PostCard';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LoadedPost } from '~/utils/types';
+import UserContext from '~/utils/UserContext';
 
 interface PostCardDisplayProps {
   posts: LoadedPost[];
@@ -18,12 +19,18 @@ const PostCardDisplay: React.FC<PostCardDisplayProps> = ({
     setDisplayPosts(posts);
   }, [posts]);
 
+  const user = useContext(UserContext);
+  console.log('user', user);
+
   const deletePost = async (id: string) => {
+    if (!user) {
+      return alert('You must be logged in to delete a post');
+    }
     const newPosts = displayPosts.filter((post) => post.id !== id);
     setDisplayPosts(newPosts);
     await fetch('/deletePost', {
       method: 'POST',
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id, userId: user.id }),
     });
   };
 

@@ -40,3 +40,12 @@ export async function deleteUserByUsername(username: string) {
   });
   return user;
 }
+
+export async function isAdmin(id: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return user?.role === 'ADMIN';
+}

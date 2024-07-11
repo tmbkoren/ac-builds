@@ -1,5 +1,6 @@
 import { prisma } from '~/utils/prisma.server';
 import { CreatedPost } from '~/utils/types';
+import { isAdmin } from './user.server';
 
 export async function createPost(post: CreatedPost) {
   const {
@@ -44,7 +45,7 @@ export async function getPosts(
   platform: string = 'ALL',
   type: string = 'ALL'
 ) {
-  const pageSize = 5;
+  const pageSize = 40;
   const skip = (page - 1) * pageSize;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma filters are dynamic
@@ -143,9 +144,18 @@ export async function getPostsByUserId(userId: string) {
   }));
 }
 
-export async function deletePostById(id: string) {
+export async function deletePostById(id: string, userId: string) {
+  const admin = await isAdmin(userId);
+
+  if (admin) {
+    console.log('admin delete');
+    return await prisma.post.delete({
+      where: { id },
+    });
+  }
+  console.log('attempting non admin delete,', id, userId);
   return await prisma.post.delete({
-    where: { id },
+    where: { id, userId },
   });
 }
 
