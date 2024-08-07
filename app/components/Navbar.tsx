@@ -33,9 +33,29 @@ interface ProfileLinkProps {
 const ProfileLink: React.FC<ProfileLinkProps> = ({ location }) => {
   switch (location) {
     case '/profile':
-      return <Link to={'/logout'}>Logout</Link>;
+      return (
+        <Link to={'/logout'}>
+          <Text
+            _hover={{
+              textDecoration: 'underline',
+            }}
+          >
+            Logout
+          </Text>
+        </Link>
+      );
     default:
-      return <Link to={'/profile'}>Profile</Link>;
+      return (
+        <Link to={'/profile'}>
+          <Text
+            _hover={{
+              textDecoration: 'underline',
+            }}
+          >
+            Profile
+          </Text>
+        </Link>
+      );
   }
 };
 
@@ -64,7 +84,17 @@ const Navbar = () => {
             >
               <ListItem>
                 <Link to='/'>
-                  {location === '/' ? <Text as='ins'>Home</Text> : 'Home'}
+                  {location === '/' ? (
+                    <Text as='ins'>Home</Text>
+                  ) : (
+                    <Text
+                      _hover={{
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      Home
+                    </Text>
+                  )}
                 </Link>
               </ListItem>
               <ListItem>
@@ -72,7 +102,13 @@ const Navbar = () => {
                   {location === '/about' ? (
                     <Text as='ins'>About</Text>
                   ) : (
-                    'About'
+                    <Text
+                      _hover={{
+                        textDecoration: 'underline',
+                      }}
+                    >
+                      About
+                    </Text>
                   )}
                 </Link>
               </ListItem>
