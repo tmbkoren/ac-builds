@@ -20,7 +20,7 @@ const PostCardDisplay: React.FC<PostCardDisplayProps> = ({
   }, [posts]);
 
   const user = useContext(UserContext);
-  console.log('user', user);
+  //console.log('user', user);
 
   const deletePost = async (id: string) => {
     if (!user) {
