@@ -31,11 +31,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const platform = url.searchParams.get('platform') || 'ALL';
   const type = url.searchParams.get('type') || 'ALL';
   const page = url.searchParams.get('page') || '1';
+  const sortBy = url.searchParams.get('sortBy') || 'Publish Date';
+  const sortDirection = url.searchParams.get('sortDirection') || 'ASC';
   const { pageCount, posts } = await getPosts(
     parseInt(page),
     searchQuery,
     platform,
-    type
+    type,
+    sortBy,
+    sortDirection
   );
   const cookieUser = await authenticator.isAuthenticated(request);
   let user = null;
@@ -61,6 +65,8 @@ export default function Index() {
     platform: 'ALL',
     type: 'ALL',
     search: '',
+    sortBy: 'Publish Date',
+    sortDirection: 'ASC',
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -88,6 +94,8 @@ export default function Index() {
     params.set('platform', searchState.platform);
     params.set('type', searchState.type);
     params.set('page', currentPage.toString());
+    params.set('sortBy', searchState.sortBy);
+    params.set('sortDirection', searchState.sortDirection);
     setSearchParams(params);
   }, [searchState, currentPage, setSearchParams]);
 

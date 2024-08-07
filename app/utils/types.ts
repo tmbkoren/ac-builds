@@ -15,6 +15,8 @@ export interface SearchParams {
   platform: 'STEAM' | 'PLAYSTATION' | 'XBOX' | 'ALL';
   type: 'AC' | 'EMBLEM' | 'ALL';
   search: string;
+  sortBy: 'Publish Date' | 'Rating';
+  sortDirection: 'ASC' | 'DESC';
 }
 
 export interface CreatedPost {

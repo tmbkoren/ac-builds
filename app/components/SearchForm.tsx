@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { SearchParams, PostType, Platform } from '~/utils/types';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaSortAmountDown, FaSortAmountUpAlt } from 'react-icons/fa';
 
 interface SearchFormProps {
   searchParams: SearchParams;
@@ -22,6 +22,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
   const [inputState, setInputState] = useState(searchParams.search);
   const [category, setCategory] = useState<PostType | 'ALL'>('ALL');
   const [platform, setPlatform] = useState<Platform | 'ALL'>('ALL');
+  const [sort, setSort] = useState<'Publish Date' | 'Rating'>('Publish Date');
+  const [sortDirection, setSortDirection] = useState<'ASC' | 'DESC'>('ASC');
 
   const handleSearchChange = (e) => {
     const inputValue = e.target.value;
@@ -38,11 +40,23 @@ const SearchForm: React.FC<SearchFormProps> = ({
     setPlatform(platformValue);
   };
 
+  const handleSortChange = (e) => {
+    const sortValue = e.target.value;
+    setSort(sortValue);
+  };
+
+  const handleSortDirectionChange = () => {
+    const sortDirectionValue = sortDirection === 'DESC' ? 'ASC' : 'DESC';
+    setSortDirection(sortDirectionValue);
+  };
+
   const handleSearch = () => {
     setSearchParams({
       search: inputState,
       type: category,
       platform: platform,
+      sortBy: sort,
+      sortDirection: sortDirection,
     });
   };
 
@@ -54,6 +68,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
       search: '',
       type: 'ALL',
       platform: 'ALL',
+      sortBy: 'Publish Date',
+      sortDirection: 'ASC',
     });
   };
 
@@ -89,10 +105,31 @@ const SearchForm: React.FC<SearchFormProps> = ({
           <option value='PLAYSTATION'>PLAYSTATION</option>
           <option value='XBOX'>XBOX</option>
         </Select>
+        <Select
+          placeholder='Sort by'
+          onChange={handleSortChange}
+        >
+          <option value='Publish Date'>Publish Date</option>
+          <option
+            value='Rating'
+            disabled
+          >
+            Rating(WIP)
+          </option>
+        </Select>
+        <IconButton
+          onClick={handleSortDirectionChange}
+          aria-label={sortDirection}
+          icon={
+            sortDirection == 'ASC' ? (
+              <FaSortAmountUpAlt />
+            ) : (
+              <FaSortAmountDown />
+            )
+          }
+        />
       </HStack>
-      <HStack
-        justify={'center'}
-      >
+      <HStack justify={'center'}>
         <IconButton
           icon={<FaSearch />}
           aria-label='Search'

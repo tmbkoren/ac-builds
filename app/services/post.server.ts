@@ -43,7 +43,9 @@ export async function getPosts(
   page: number = 1,
   search: string = '',
   platform: string = 'ALL',
-  type: string = 'ALL'
+  type: string = 'ALL',
+  sortBy: string = 'Publish Date',
+  sortDirection: string = 'ASC'
 ) {
   const pageSize = 40;
   const skip = (page - 1) * pageSize;
@@ -81,6 +83,10 @@ export async function getPosts(
     }
   }
 
+  if (sortBy === 'Publish Date') {
+    sortBy = 'createdAt';
+  }
+
   // console.log('filters', filters);
 
   let pageCount = await prisma.post.count({
@@ -91,6 +97,9 @@ export async function getPosts(
 
   const posts = await prisma.post.findMany({
     where: filters,
+    orderBy: {
+      [sortBy]: sortDirection.toLowerCase(),
+    },
     include: {
       user: {
         select: {
