@@ -2,6 +2,7 @@ import {
   Card,
   Heading,
   Image,
+  Link as ChakraLink,
   VStack,
   Text,
   CardBody,
@@ -80,13 +81,14 @@ const PostCard: React.FC<PostCardProps> = ({
         w={'80%'}
         display={'flex'}
         justifyContent={'center'}
+        alignItems={'center'}
       >
-        <Link to={`/post/${post.id}`}>
+        <ChakraLink as={Link} to={`/post/${post.id}`}>
           <Image
             src={post.images[0]}
             alt={post.title}
           />
-        </Link>
+        </ChakraLink>
       </CardBody>
       <VStack>
         <Text
