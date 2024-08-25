@@ -38,7 +38,8 @@ const PostCardDisplay: React.FC<PostCardDisplayProps> = ({
     <Grid
       templateColumns={{
         sm: 'repeat(1, minmax(100px, 1fr))',
-        md: 'repeat(3, minmax(200px, 1fr))',
+        md: 'repeat(2, minmax(200px, 1fr))',
+        lg: 'repeat(3, minmax(200px, 1fr))',
         xl: 'repeat(4, minmax(300px, 1fr))',
       }}
       p={{
